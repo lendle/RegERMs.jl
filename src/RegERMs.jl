@@ -10,7 +10,8 @@ import Optim: optimize
 
 export 
     # loss
-    Loss,           # abstract type for all kinds of loss
+    AbstractLoss,   # abstract type for all kinds of loss
+    RegressionLoss, # abstract type for regresssion loss
     LogisticLoss,   # Type to represent logistic loss
     SquaredLoss,    # Type to represent squared loss
     HingeLoss,      # Type to represent hinge loss

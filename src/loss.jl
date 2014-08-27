@@ -1,9 +1,9 @@
-
-abstract Loss
+abstract AbstractLoss
+abstract RegressionLoss <: AbstractLoss
 
 # for discriminative (conditional) models
-abstract OrdinalLoss <: Loss
-abstract NominalLoss <: Loss
+abstract OrdinalLoss <: RegressionLoss
+abstract NominalLoss <: RegressionLoss
 
 # for binary-class cases
 abstract BinomialLoss <: NominalLoss
@@ -11,9 +11,9 @@ abstract BinomialLoss <: NominalLoss
 abstract MultinomialLoss <: NominalLoss
 
 # fall back
-value_and_deriv(l::Loss, fv::Real, y::Real) = (value(l, fv, y), deriv(l, fv, y))
+value_and_deriv(l::RegressionLoss, fv::Real, y::Real) = (value(l, fv, y), deriv(l, fv, y))
 
-function tloss(l::Loss, fv::AbstractVector, y::AbstractVector)
+function tloss(l::RegressionLoss, fv::AbstractVector, y::AbstractVector)
     n = size(fv, 1)  # n is the number of samples
     s = 0.0
     for i = 1:n
@@ -22,7 +22,7 @@ function tloss(l::Loss, fv::AbstractVector, y::AbstractVector)
     return s
 end
 
-function values(l::Loss, fv::AbstractVector, y::AbstractVector)
+function values(l::RegressionLoss, fv::AbstractVector, y::AbstractVector)
     n = size(fv, 1)  # n is the number of samples
     v = zeros(n)
     for i = 1:n
@@ -31,7 +31,7 @@ function values(l::Loss, fv::AbstractVector, y::AbstractVector)
     return v
 end
 
-function derivs(l::Loss, fv::AbstractVector, y::AbstractVector)
+function derivs(l::RegressionLoss, fv::AbstractVector, y::AbstractVector)
     n = size(fv, 1)  # n is the number of samples
     dv = zeros(n)
     for i = 1:n
